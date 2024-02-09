@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'Lato',
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber)),
-      home: HomePage(),
+      home: const HomePage(),
     );
   }
 }
