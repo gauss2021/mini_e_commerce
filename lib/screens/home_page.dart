@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_e_commerce/components/card_product.dart';
 import 'package:mini_e_commerce/global_variable.dart';
+import 'package:mini_e_commerce/screens/detail_product_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,9 +16,22 @@ class _HomePageState extends State<HomePage> {
 
   late List<String> selectedBrand;
 
+  int currentIndexOfBottomNavigationBar = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndexOfBottomNavigationBar,
+          onTap: (value) {
+            setState(() {
+              currentIndexOfBottomNavigationBar = value;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: '')
+          ]),
       body: SafeArea(
           child: Column(
         children: [
@@ -71,7 +85,6 @@ class _HomePageState extends State<HomePage> {
                       child: GestureDetector(
                         onTap: () => {
                           setState(() {
-                            print('element $index');
                             currentIndex = index;
                           })
                         },
@@ -97,12 +110,21 @@ class _HomePageState extends State<HomePage> {
             child: ListView.builder(
                 itemCount: products.length,
                 itemBuilder: (context, index) {
-                  final Map currentProduct = products[index];
+                  final Map<String, Object> currentProduct = products[index];
 
-                  return CardProduct(
-                      price: currentProduct['price'],
-                      title: currentProduct['title'],
-                      imageUrl: currentProduct['imageUrl']);
+                  return GestureDetector(
+                    onTap: () {
+                      print('On a clique sur un produit');
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return DetailProductPage(product: currentProduct);
+                      }));
+                    },
+                    child: CardProduct(
+                        price: currentProduct['price'] as String,
+                        title: currentProduct['title'] as String,
+                        imageUrl: currentProduct['imageUrl'] as String),
+                  );
                 }),
           )
         ],
