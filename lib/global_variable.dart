@@ -41,13 +41,13 @@ final products = [
   },
 ];
 
-final cart = [
-  {
-    'id': 4,
-    'title': 'air jordan',
-    'price': '25000',
-    'sizes': 36,
-    'brand': 'Nike',
-    'imageUrl': "assets/images/shoes_5.png"
-  }
-];
+// final cart = [
+//   {
+//     'id': 4,
+//     'title': 'air jordan',
+//     'price': '25000',
+//     'size': 36,
+//     'brand': 'Nike',
+//     'imageUrl': "assets/images/shoes_4.png"
+//   }
+// ];
