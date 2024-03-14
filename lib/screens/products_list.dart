@@ -15,6 +15,8 @@ class _ProductsListState extends State<ProductsList> {
   final List<String> brands = ['All', 'Addidas', 'Nike', 'Puma', 'New Balance'];
   int currentIndex = 0;
 
+  TextEditingController searchEditingController = TextEditingController();
+
   List<Map<String, Object>> filterProduct = [];
 
   late List<String> selectedBrand;
@@ -24,15 +26,35 @@ class _ProductsListState extends State<ProductsList> {
     return products.where((product) => product['brand'] == brand).toList();
   }
 
+  List<Map<String, Object>> filterProductsByName(String query) {
+    List<Map<String, Object>> filteredList = [];
+    if (query.isNotEmpty) {
+      for (var product in products) {
+        String title = product['title'].toString().toLowerCase();
+        if (title.contains(query.toLowerCase())) {
+          filteredList.add(product);
+        }
+      }
+    }
+
+    return filteredList;
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    searchEditingController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Column(
       children: [
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(12.0),
               child: Text(
                 "Shopping \n Collection",
@@ -44,7 +66,15 @@ class _ProductsListState extends State<ProductsList> {
             ),
             Expanded(
               child: TextField(
-                decoration: InputDecoration(
+                onChanged: (text) {
+                  print(text);
+                  setState(() {
+                    filterProduct = filterProductsByName(text);
+                    print(filterProduct);
+                  });
+                },
+                controller: searchEditingController,
+                decoration: const InputDecoration(
                     hintText: 'Search',
                     prefixIcon: Icon(Icons.search),
                     focusedBorder: OutlineInputBorder(
